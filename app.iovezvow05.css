@@ -2056,3 +2056,11 @@ html.intro-on .intro::after {
 .home-values { margin-top: 4px; }
 .home-values li { padding-block: 18px; }
 .home-story-link { margin-top: 20px; }
+
+/* 머리말 표시 = 칸 안 아기공룡 (2026-11-05) */
+.brand-mark svg { display: block; overflow: visible; }
+.brand-mark .bm-skin { fill: var(--on-primary); }
+.brand-mark .bm-spike { fill: #F4A483; }
+.brand-mark .bm-eye { fill: var(--primary); }
+.brand:hover .brand-mark svg { transform: translateY(-1px) rotate(-4deg); transition: transform 160ms ease; }
+@media (prefers-reduced-motion: reduce) { .brand:hover .brand-mark svg { transform: none; } }
