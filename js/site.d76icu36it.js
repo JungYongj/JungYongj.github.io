@@ -71,6 +71,16 @@
 			setMenu(!isMenuOpen(), false);
 			return;
 		}
+		var galBtn = t.closest("[data-gal-prev], [data-gal-next], [data-gal-go]");
+		if (galBtn) {
+			var gal = galBtn.closest("[data-gallery]");
+			if (gal && gal._gal) {
+				var cur = gal._gal.index();
+				if (galBtn.hasAttribute("data-gal-go")) { gal._gal.go(parseInt(galBtn.getAttribute("data-gal-go"), 10)); }
+				else { gal._gal.go(cur + (galBtn.hasAttribute("data-gal-next") ? 1 : -1)); }
+			}
+			return;
+		}
 		var copyBtn = t.closest("[data-copy]");
 		if (copyBtn) {
 			copyText(copyBtn);
@@ -133,6 +143,72 @@
 		}
 	}
 
+	// ---------- 프로젝트 화면 갤러리 ----------
+	// 넘기기 자체는 CSS 스크롤 스냅이 한다. 여기서는 번호·버튼·썸네일·키보드만 맞춘다.
+	function setupGalleries() {
+		document.querySelectorAll("[data-gallery]").forEach(function (gal) {
+			if (gal._gal) { return; }
+			var track = gal.querySelector("[data-gal-track]");
+			var slides = gal.querySelectorAll("[data-gal-slide]");
+			if (!track || slides.length === 0) { return; }
+			var bar = gal.querySelector("[data-gal-bar]");
+			var current = gal.querySelector("[data-gal-current]");
+			var prev = gal.querySelector("[data-gal-prev]");
+			var next = gal.querySelector("[data-gal-next]");
+			var thumbs = gal.querySelectorAll("[data-gal-go]");
+			var thumbList = gal.querySelector(".gal-thumbs");
+			var shown = -1;
+
+			function index() {
+				var step = slides.length > 1 ? slides[1].offsetLeft - slides[0].offsetLeft : track.clientWidth;
+				return Math.max(0, Math.min(slides.length - 1, Math.round(track.scrollLeft / (step || 1))));
+			}
+			function go(i) {
+				i = Math.max(0, Math.min(slides.length - 1, i));
+				track.scrollTo({ left: slides[i].offsetLeft - slides[0].offsetLeft });
+			}
+			function sync() {
+				var i = index();
+				if (i === shown) { return; }
+				shown = i;
+				if (current) { current.textContent = String(i + 1); }
+				if (prev) { prev.disabled = i === 0; }
+				if (next) { next.disabled = i === slides.length - 1; }
+				thumbs.forEach(function (b, k) {
+					var on = k === i;
+					b.classList.toggle("is-active", on);
+					if (on) { b.setAttribute("aria-current", "true"); } else { b.removeAttribute("aria-current"); }
+					if (on && thumbList) {
+						// 썸네일 줄만 옆으로 맞춘다 (페이지 세로 스크롤은 건드리지 않음)
+						var li = b.parentElement;
+						var left = li.offsetLeft - thumbList.offsetLeft;
+						if (left < thumbList.scrollLeft || left + li.offsetWidth > thumbList.scrollLeft + thumbList.clientWidth) {
+							thumbList.scrollLeft = left - (thumbList.clientWidth - li.offsetWidth) / 2;
+						}
+					}
+				});
+			}
+			var ticking = false;
+			track.addEventListener("scroll", function () {
+				if (ticking) { return; }
+				ticking = true;
+				window.requestAnimationFrame(function () { ticking = false; sync(); });
+			}, { passive: true });
+			track.addEventListener("keydown", function (e) {
+				if (e.key === "ArrowRight" || e.key === "ArrowLeft") {
+					e.preventDefault();
+					go(index() + (e.key === "ArrowRight" ? 1 : -1));
+				} else if (e.key === "Home" || e.key === "End") {
+					e.preventDefault();
+					go(e.key === "Home" ? 0 : slides.length - 1);
+				}
+			});
+			gal._gal = { go: go, index: index };
+			if (bar) { bar.hidden = false; }
+			sync();
+		});
+	}
+
 	// ---------- 헤더 경계선 ----------
 	function onScroll() {
 		var h = document.querySelector(".site-header");
@@ -192,6 +268,7 @@
 		setMenu(false, false);
 		onScroll();
 		setupReveal();
+		setupGalleries();
 	}
 
 	refresh();
