@@ -2064,3 +2064,69 @@ html.intro-on .intro::after {
 .brand-mark .bm-eye { fill: var(--primary); }
 .brand:hover .brand-mark svg { transform: translateY(-1px) rotate(-4deg); transition: transform 160ms ease; }
 @media (prefers-reduced-motion: reduce) { .brand:hover .brand-mark svg { transform: none; } }
+
+/* ==========================================================================
+   사진 없는 프로젝트 표지 (2026-11-05): 사진 카드와 같은 창 틀 + 흐린 화면 밑그림
+   ========================================================================== */
+.cover-wire {
+    position: relative;
+    height: calc(100% + 4px);
+    overflow: hidden;
+    border: 1px solid var(--border);
+    border-bottom: 0;
+    border-radius: 10px 10px 0 0;
+    background: var(--surface);
+    box-shadow: 0 10px 30px -18px rgba(18, 22, 42, 0.45);
+    color: var(--text);
+    transition: transform 320ms var(--ease);
+}
+.project-card:hover .cover-wire { transform: translateY(-4px); }
+.cover-wire > svg { display: block; width: 100%; height: 100%; opacity: 0.55; }
+.cover-wire .w-bar  { fill: var(--surface-2); }
+.cover-wire .w-dot  { fill: var(--border); }
+.cover-wire .w-line { fill: var(--border); }
+.cover-wire .w-box  { fill: none; stroke: var(--border); stroke-width: 1.2; }
+.cover-wire .w-btn  { fill: var(--primary); opacity: 0.35; }
+.cover-wire .w-head { fill: var(--primary); opacity: 0.14; }
+.cover-wire .w-ok   { fill: var(--accent); opacity: 0.6; }
+.wire-badge {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 7px 14px;
+    border-radius: 999px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-md, 0 6px 20px -10px rgba(18, 22, 42, 0.35));
+    color: var(--muted);
+    font-size: 13px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+.wire-badge.is-live { color: var(--text); }
+.wire-pulse {
+    position: relative;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+}
+.wire-pulse::after {
+    content: "";
+    position: absolute;
+    inset: -4px;
+    border-radius: 50%;
+    border: 2px solid var(--accent);
+    opacity: 0;
+    animation: wire-pulse 1.8s ease-out infinite;
+}
+@keyframes wire-pulse { 0% { transform: scale(0.5); opacity: 0.7; } 100% { transform: scale(1.4); opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .wire-pulse::after { animation: none; } }
+@media (min-width: 640px) and (max-width: 1023px) {
+    .cover-wire { height: 100%; border: 1px solid var(--border); border-right: 0; border-radius: 10px 0 0 10px; }
+}
+.book-cover { background: var(--surface-2); }
