@@ -1,0 +1,157 @@
+/* ==========================================================================
+   디자인 토큰 — DESIGN 9.1 (명도 대비 계산 완료 값)
+   "밤하늘 아래 램프 하나": 짙은 남색 + 은은한 램프빛 + 피치 포인트
+   색만으로 상태를 구분하지 않는다(적녹색약) — 항상 아이콘/글자 라벨과 함께.
+   ========================================================================== */
+
+/* Pretendard: 지금은 PC에 설치된 글꼴을 쓴다(local). 배포 전에 woff2 파일(OFL)을 wwwroot/fonts에 둔다. */
+@font-face {
+    font-family: "Pretendard Site";
+    src: url("../fonts/pretendard-400.woff2") format("woff2");
+    font-weight: 400;
+    font-display: swap;
+}
+@font-face {
+    font-family: "Pretendard Site";
+    src: url("../fonts/pretendard-500.woff2") format("woff2");
+    font-weight: 500;
+    font-display: swap;
+}
+@font-face {
+    font-family: "Pretendard Site";
+    src: url("../fonts/pretendard-600.woff2") format("woff2");
+    font-weight: 600;
+    font-display: swap;
+}
+@font-face {
+    font-family: "Pretendard Site";
+    src: url("../fonts/pretendard-700.woff2") format("woff2");
+    font-weight: 700;
+    font-display: swap;
+}
+@font-face {
+    font-family: "Pretendard Site";
+    src: url("../fonts/pretendard-800.woff2") format("woff2");
+    font-weight: 800;
+    font-display: swap;
+}
+
+:root {
+    color-scheme: light;
+
+    /* 색 (라이트) */
+    --bg: #F7F7FA;
+    --surface: #FFFFFF;
+    --surface-2: #EFF0F6;
+    --border: #DCDEE8;
+    --border-strong: #C4C8D8;
+    --text: #1B1E33;
+    --muted: #555A70;
+    --primary: #2F3C8F;
+    --on-primary: #FFFFFF;
+    --accent: #E07A4F;          /* 채움·장식 전용 (라이트에선 글자색 금지 2.8:1) */
+    --on-accent: #1B1E33;
+    --accent-ink: #A4441C;      /* 피치 계열 글자 5.7:1 */
+    --primary-soft: rgba(47, 60, 143, 0.08);
+    --accent-soft: rgba(224, 122, 79, 0.16);
+    --header-bg: rgba(247, 247, 250, 0.82);
+    --glow: none;
+    --shadow-sm: 0 1px 2px rgba(27, 30, 51, 0.06);
+    --shadow-md: 0 1px 2px rgba(27, 30, 51, 0.05), 0 8px 24px -12px rgba(27, 30, 51, 0.18);
+    --shadow-lg: 0 2px 4px rgba(27, 30, 51, 0.04), 0 18px 40px -18px rgba(27, 30, 51, 0.28);
+    --card-border: var(--border);
+
+    /* 글꼴 */
+    --font-sans: "Pretendard Site", "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", system-ui, sans-serif;
+    --font-mono: D2Coding, Consolas, ui-monospace, monospace;
+
+    /* 크기 (모바일 기본, 768px 이상에서 데스크톱 값) */
+    --fs-hero: 36px;
+    --fs-h1: 30px;
+    --fs-h2: 24px;
+    --fs-h3: 18px;
+    --fs-body: 16px;
+    --fs-small: 14px;
+    --lh-body: 1.7;
+
+    /* 간격 8px 단위 */
+    --s-1: 8px;
+    --s-2: 16px;
+    --s-3: 24px;
+    --s-4: 32px;
+    --s-6: 48px;
+    --s-8: 64px;
+    --s-12: 96px;
+
+    --radius: 16px;
+    --radius-sm: 10px;
+    --page-max: 1200px;
+    --gutter: 16px;
+    --header-h: 64px;
+
+    --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+    --dur: 180ms;
+}
+
+@media (min-width: 768px) {
+    :root {
+        --fs-hero: 56px;
+        --fs-h1: 40px;
+        --fs-h2: 28px;
+        --fs-h3: 20px;
+        --fs-body: 17px;
+        --gutter: 32px;
+        --header-h: 72px;
+    }
+}
+
+/* 다크 — JS가 없을 때는 OS 설정을 따르고, 있으면 data-theme이 결정한다 */
+@media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+        color-scheme: dark;
+        --bg: #12162A;
+        --surface: #1B2038;
+        --surface-2: #161B31;
+        --border: #2C3252;
+        --border-strong: #3A4168;
+        --text: #ECEEF7;
+        --muted: #A7ACC4;
+        --primary: #9DABFF;
+        --on-primary: #12162A;
+        --accent: #F4A483;
+        --on-accent: #12162A;
+        --accent-ink: #F7B899;
+        --primary-soft: rgba(157, 171, 255, 0.12);
+        --accent-soft: rgba(244, 164, 131, 0.16);
+        --header-bg: rgba(18, 22, 42, 0.78);
+        --glow: radial-gradient(closest-side, rgba(255, 196, 110, 0.10), transparent 100%);
+        --shadow-sm: none;
+        --shadow-md: none;
+        --shadow-lg: 0 18px 40px -20px rgba(0, 0, 0, 0.6);
+        --card-border: var(--border);
+    }
+}
+
+:root[data-theme="dark"] {
+    color-scheme: dark;
+    --bg: #12162A;
+    --surface: #1B2038;
+    --surface-2: #161B31;
+    --border: #2C3252;
+    --border-strong: #3A4168;
+    --text: #ECEEF7;
+    --muted: #A7ACC4;
+    --primary: #9DABFF;
+    --on-primary: #12162A;
+    --accent: #F4A483;
+    --on-accent: #12162A;
+    --accent-ink: #F7B899;
+    --primary-soft: rgba(157, 171, 255, 0.12);
+    --accent-soft: rgba(244, 164, 131, 0.16);
+    --header-bg: rgba(18, 22, 42, 0.78);
+    --glow: radial-gradient(closest-side, rgba(255, 196, 110, 0.10), transparent 100%);
+    --shadow-sm: none;
+    --shadow-md: none;
+    --shadow-lg: 0 18px 40px -20px rgba(0, 0, 0, 0.6);
+    --card-border: var(--border);
+}
