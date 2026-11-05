@@ -124,7 +124,7 @@
 		if (!source) { return; }
 		var text = source.textContent.trim();
 		function done(ok) {
-			if (label) { label.textContent = ok ? "복사됨" : "직접 복사해 주세요"; }
+			if (label) { label.textContent = ok ? "복사됨" : "직접 복사 부탁드립니다"; }
 			btn.classList.toggle("is-done", ok);
 			window.setTimeout(function () {
 				if (label) { label.textContent = "복사"; }
