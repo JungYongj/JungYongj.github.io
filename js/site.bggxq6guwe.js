@@ -368,11 +368,19 @@
 		}
 		if (!observer) {
 			observer = new IntersectionObserver(function (entries) {
+				// 같이 화면에 들어온 것은 문서 순서대로 조금씩 늦게 (첫 화면 히어로는 오프닝이 따로 맡음)
+				var shown = 0;
 				entries.forEach(function (entry) {
-					if (entry.isIntersecting) {
-						entry.target.classList.add("is-visible");
-						observer.unobserve(entry.target);
+					if (!entry.isIntersecting) { return; }
+					var el = entry.target;
+					var delay = el.closest(".hero") ? 0 : Math.min(shown, 5) * 70;
+					shown++;
+					if (delay) {
+						el.style.transitionDelay = delay + "ms";
+						window.setTimeout(function () { el.style.transitionDelay = ""; }, delay + 700);
 					}
+					el.classList.add("is-visible");
+					observer.unobserve(el);
 				});
 			}, { rootMargin: "0px 0px -8% 0px", threshold: 0.08 });
 		}

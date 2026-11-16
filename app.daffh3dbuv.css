@@ -2017,7 +2017,8 @@ html.intro-on .intro::after {
     box-shadow: 0 10px 30px -18px rgba(18, 22, 42, 0.45);
     transition: transform 320ms var(--ease);
 }
-.project-card:hover .project-cover.has-shot img { transform: translateY(-4px); }
+.project-card:hover .project-cover.has-shot img { transform: translateY(-4px) scale(1.02); }
+.project-cover.has-shot img { transform-origin: center top; }
 .cover-chip {
     position: absolute;
     right: 12px;
